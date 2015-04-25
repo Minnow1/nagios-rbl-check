@@ -140,7 +140,7 @@ class ThreadRBL(threading.Thread):
             if check_addr != None and "127.0.0." in check_addr:
                 on_blacklist.append(root_name)
 
-            #signals to queue job is done
+            # signals to queue job is done
             self.queue.task_done()
 
 
@@ -184,9 +184,9 @@ def main(argv, environ):
         except:
             print("ERROR: Host '%s' not found - maybe try a FQDN?" % host)
             sys.exit(status['UNKNOWN'])
-    addr_parts = string.split(addr, '.')
+    addr_parts = str.split(addr, '.')
     addr_parts.reverse()
-    check_name = string.join(addr_parts, '.')
+    check_name = '.'.join(addr_parts)
     # We set this to make sure the output is nice. It's not used except for the output after this point.
     host = addr
 
@@ -198,11 +198,11 @@ def main(argv, environ):
         t.setDaemon(True)
         t.start()
 
-        #populate queue with data
+        # populate queue with data
     for blhost in serverlist:
         queue.put((check_name, blhost))
 
-    #wait on the queue until everything has been processed
+    # wait on the queue until everything has been processed
     queue.join()
 
     ###### End Thread stuff
